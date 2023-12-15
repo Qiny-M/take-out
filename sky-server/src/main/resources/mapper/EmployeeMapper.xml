@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sky.mapper.EmployeeMapper">
+    <!--员工分页查询-->
     <select id="pageQuery" resultType="com.sky.entity.Employee">
         select * from employee
         <where>
@@ -12,7 +13,8 @@
         order by create_time desc
     </select>
 
-    <update id="update" parameterType="Employee">
+    <!--根据主键id动态修改属性-->
+    <update id="update" parameterType="Employee"># yml中配置了type-aliases-package: com.sky.entity
         update employee
         <set>
             <if test="name != null">name = #{name},</if>

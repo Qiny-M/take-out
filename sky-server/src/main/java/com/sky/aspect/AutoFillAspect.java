@@ -46,7 +46,7 @@ public class AutoFillAspect {
             return;
         }
 
-        Object entity = args[0];
+        Object entity = args[0];//约定实体放在（insert/update）方法的参数列表第一个
 
         //准备赋值的数据
         LocalDateTime now = LocalDateTime.now();
