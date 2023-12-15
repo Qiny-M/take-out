@@ -102,7 +102,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     /**
-     * 扩展Spring MVC框架的消息转化器
+     * 扩展Spring MVC框架的消息转化器，处理后端返回给前端的消息，如把createTime变成json返回
      * @param converters
      */
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
@@ -111,7 +111,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         //需要为消息转换器设置一个对象转换器，对象转换器可以将Java对象序列化为json数据
         converter.setObjectMapper(new JacksonObjectMapper());
-        //将自己的消息转化器加入容器中
+        //将自己的消息转化器加入容器中，把我们自己的消息转换器放在第一位，优先使用
         converters.add(0,converter);
     }
 }
