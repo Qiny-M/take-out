@@ -6,11 +6,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-//@SpringBootTest
+//@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+//纯净环境运行springboottest，例如不加载websocket配置类
 public class SpringDataRedisTest {
 
     @Autowired

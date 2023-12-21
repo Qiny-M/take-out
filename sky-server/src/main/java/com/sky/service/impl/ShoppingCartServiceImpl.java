@@ -37,14 +37,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         //判断当前加入到购物车中的商品是否已经存在了
         ShoppingCart shoppingCart = new ShoppingCart();
         BeanUtils.copyProperties(shoppingCartDTO,shoppingCart);
-        Long userId = BaseContext.getCurrentId();
+        Long userId = BaseContext.getCurrentId();//拦截器中已经用treadlocal set过了
         shoppingCart.setUserId(userId);
 
         List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
 
         //如果已经存在了，只需要将数量加一
         if(list != null && list.size() > 0){
-            ShoppingCart cart = list.get(0);
+            ShoppingCart cart = list.get(0);//取出第一条数据，其实只会有一条
             cart.setNumber(cart.getNumber() + 1);//update shopping_cart set number = ? where id = ?
             shoppingCartMapper.updateNumberById(cart);
         }else {

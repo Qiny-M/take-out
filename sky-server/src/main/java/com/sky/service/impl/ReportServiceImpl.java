@@ -58,10 +58,12 @@ public class ReportServiceImpl implements ReportService {
             dateList.add(begin);
         }
 
-        //存放每天的营业额
+        //存放遍历计算出来的每天的营业额
         List<Double> turnoverList = new ArrayList<>();
+
         for (LocalDate date : dateList) {
             //查询date日期对应的营业额数据，营业额是指：状态为“已完成”的订单金额合计
+            //获取当天的起始0点和结束23.59点
             LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
             LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
 
@@ -71,6 +73,8 @@ public class ReportServiceImpl implements ReportService {
             map.put("end", endTime);
             map.put("status", Orders.COMPLETED);
             Double turnover = orderMapper.sumByMap(map);
+
+            //若当天营业额为0，实际返回的结果是null，所以要转为0.0
             turnover = turnover == null ? 0.0 : turnover;
             turnoverList.add(turnover);
         }
@@ -169,7 +173,7 @@ public class ReportServiceImpl implements ReportService {
             validOrderCountList.add(validOrderCount);
         }
 
-        //计算时间区间内的订单总数量
+        //计算时间区间内的订单总数量，累加list中元素的值，使用stream流的累加方法：reduce
         Integer totalOrderCount = orderCountList.stream().reduce(Integer::sum).get();
 
         //计算时间区间内的有效订单数量
@@ -218,6 +222,8 @@ public class ReportServiceImpl implements ReportService {
         LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
 
         List<GoodsSalesDTO> salesTop10 = orderMapper.getSalesTop10(beginTime, endTime);
+
+        //利用stream流的map方法，将list中原本对象的各个属性单独拆分出来，再用collect重组成list
         List<String> names = salesTop10.stream().map(GoodsSalesDTO::getName).collect(Collectors.toList());
         String nameList = StringUtils.join(names, ",");
 
@@ -254,7 +260,7 @@ public class ReportServiceImpl implements ReportService {
             //获取表格文件的Sheet页
             XSSFSheet sheet = excel.getSheet("Sheet1");
 
-            //填充数据--时间
+            //填充数据--时间，获取行数索引（从0开始）
             sheet.getRow(1).getCell(1).setCellValue("时间：" + dateBegin + "至" + dateEnd);
 
             //获得第4行

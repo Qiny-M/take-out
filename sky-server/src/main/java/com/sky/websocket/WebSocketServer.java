@@ -13,6 +13,7 @@ import java.util.Map;
 
 /**
  * WebSocket服务
+ * 通常用在以下业务场景：视频弹幕，网页聊天，体育实况更新，股票实时报价
  */
 @Component
 @ServerEndpoint("/ws/{sid}")

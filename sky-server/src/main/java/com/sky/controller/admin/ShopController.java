@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("adminShopController")
+@RestController("adminShopController")//与user包下同名的controller区分
 @RequestMapping("/admin/shop")
 @Api(tags = "店铺相关接口")
 @Slf4j
